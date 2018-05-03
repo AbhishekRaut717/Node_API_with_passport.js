@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+    <title> Banking API with Passport.js</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+            
+    <style>
+        body         { padding-top:80px; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="jumbotron text- center">
+        <h1><i class="medium material-icons">airplay</i> A/C Information </h1>
+
+        <br>
+        <!-- <label> A/C No.</label>
+        <input type="text" name="ac_no" value="<%= ac_no %>" disabled>
+        <label> A/C Type.</label>
+        <input type="text" name="ac_type" value="<%= ac_type %>" disabled>
+        <label> Balance</label>
+        <input type="text" name="balance" value="<%= balance %>" disabled>
+        <label> First Name</label>
+        <input type="text" name="fname" value="<%= fname %>" disabled>
+        <label> Last Name</label>
+        <input type="text" name="lname" value="<%= lname %>" disabled>
+         <label> Branch ID </label>
+        <input type="text" name="branch_id" value="<%= branch_id %>">
+ -->
+
+
+        <table>
+            <thead>
+                <td>A/C No.</td>
+                <td>A/C Type</td>
+                <td>Balance</td>
+                <td>Branch ID</td>
+                <td>First Name</td>
+                <td>Last Name</td>
+            </thead>
+            <tr>
+                <td>
+                    <%= ac_no %>
+                </td>
+                <td>
+                    <%= ac_type %>
+                </td>
+                <td>
+                    <%= balance %>
+                </td>
+                <td>
+                    <%= branch_id %>
+                </td>
+                <td>
+                    <%= fname %>
+                </td>
+                <td>
+                    <%= lname %>
+                </td>
+            </tr>
+                
+        </table>
+
+    </div>
+</div>
+</body>
+</html>
