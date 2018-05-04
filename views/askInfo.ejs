@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+    <title> Banking API with Passport.js</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style>
+        body         { padding-top:60px; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="jumbotron text- center">
+        <h1><i class="medium material-icons">airplay</i> Input A/c No. </h1>
+
+        <br>
+
+      <form class="col s12" action="/auth/user/info" method="post">
+        <div class="row input-field col s6">
+        <label> Enter the A/C no. to get the Information</label>
+        <input type="text" name="ac_no" placeholder=" Enter A/C No." class="validate">
+      </div>
+      <button type="submit" class="btn waves-effect waves-light"> Submit <i class="material-icons right">send</i></button>
+      </form>
+    </div>
+    <br>
+
+    <br>
+    <br>
+    <br>
+
+    <h5> Don't Have an Account ?</h5> <a href="/auth/user/create" class="waves-effect waves-light btn-large"><i class="material-icons left">business_center</i>
+    Create New Account </a>
+    <h5> Or else </h5>
+    <a href="/logout" class="waves-effect waves-light btn-large"><i class="material-icons left">close</i> Logout </a>
+
+    <a href="/auth/user" class="waves-effect waves-light btn-large"><i class="material-icons left">beenhere</i> Home </a>
+
+</div>
+</body>
+</html>

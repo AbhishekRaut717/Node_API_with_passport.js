@@ -17,29 +17,50 @@
         <h1><i class="medium material-icons">insert_chart</i> A/C Information </h1>
 
         <br>
-        <form class="" action="/auth/user/sendMoney" method="post">
-          <div class="row input-field col s8">
-          <label> Sender's A/c no. </label>
-          <input type="text" name="sender_ac_no" value="">
-        </div>
 
-        <div class="row input-field col s8">
-        <label> Receiver's A/c no. </label>
-        <input type="text" name="receiver_ac_no" value="">
-      </div>
+      <table>
+        <thead>
+          <td>
+            A/c No.
+          </td>
+          <td>
+            A/c Type.
+          </td>
+          <td>
+            Branch ID
+          </td>
+          <td>
+            Balance
+          </td>
+          <td>
+            First Name
+          </td>
+          <td>
+            Last Name
+          </td>
+        </thead>
+      <tr>
+        <td>
+          <%= data.ac_no %>
+        </td>
+        <td>
+          <%= data.ac_type %>
+        </td>
+        <td>
+          <%= data.branch_id %>
+        </td>
+        <td>
+          <%= data.balance %>
+        </td>
+        <td>
+          <%= data.fname %>
+        </td>
+        <td>
+          <%= data.lname %>
+        </td>
 
-      <div class="row input-field col s8">
-      <label> Receiver's Email. </label>
-      <input type="text" name="receiver_email" value="">
-    </div>
-
-    <div class="row input-field col s8">
-    <label> Transaction Amount </label>
-    <input type="text" name="amt" value="">
-  </div>
-
-  <button type="submit" class="btn waves-effect waves-light"> Send Money   <i class="material-icons right">send</i></button>
-        </form>
+      </tr>
+      </table>
     </div>
     <br>
     <br>

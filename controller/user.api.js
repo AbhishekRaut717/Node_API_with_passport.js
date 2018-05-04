@@ -1,64 +1,135 @@
 var User = require('../model/user.model.js');
 
+
 exports.create = function(req, res)
 {
-	if(!req.body.ac_no || !req.body.fname || !req.body.ac_type)
+	if(req.user)
 	{
-		return res.json({success: false, msg: 'Please enter all the details '});
-	}
+		email = req.user.local.email.toLowerCase();
 
-	User.findOne({'local.ac_no': req.body.ac_no}, function(err, user) {
-		if(err)
+		if(!req.body.ac_no || !req.body.fname || !req.body.branch_id)
 		{
-			console.log(err);
-			res.json({success: false, msg: 'Error occured while adding details'})
-		}
-		if(user)
-		{
-			res.json({success: false, msg: 'A/C already exists'});
-		}
-		else {
-
-			var newUser = req.user;
-			newUser.local.ac_no = req.body.ac_no;
-			newUser.local.ac_type = req.body.ac_type;
-			newUser.local.balance = req.body.balance;
-			newUser.local.fname = req.body.fname;
-			newUser.local.lname = req.body.lname;
-			newUser.local.branch_id = req.body.branch_id;
-
-			newUser.save(function(err, data) {
+			res.json({success: false, msg: 'Please Enter All The Details '});
+		} else {
+			User.findOne({'local.email': email}, function(err, user) {
 				if(err)
 				{
-					res.json({success: false, msg: 'Error occured while saving'});
-				}
-				else {
-					res.json({success: true, msg: 'A/C created successfully', data});
+					res.json({success: false, err})
+				} else {
+
+					var detail = {'ac_no': req.body.ac_no, 'ac_type': req.body.ac_type, 'fname': req.body.fname, 'lname': req.body.lname, 'branch_id': req.body.branch_id, 'balance': req.body.balance};
+
+					//use the user a/c from passport signup
+					var newUser = req.user;
+					newUser.local.acc.details.push(detail);
+
+					newUser.save(function(err, savedUser) {
+						if(err)
+						{
+							res.json({success: false, err})
+						} else {
+							res.status(200).send('A/C created Successfully');
+						}
+					});
 				}
 			});
+			};
+		} else {
+			res.json({success: false, msg: 'Error .... Please Login First'})
 		}
-	});
-}
+	}
 
-exports.getInfo = function(req, res)
+exports.sendInfo = function(req, res)
 {
-	console.log(req.user);
-	User.findOne({'local.ac_no': req.user.local.ac_no}, function(err, user) {
-		if(err)
-		{
-			res.json({success: false, msg: 'Error occured'});
+	console.log(req.body.ac_no);
+	if(!req.body.ac_no)
+	{
+		res.json({success: false, msg: "Please enter the A/c no. you wish to retrive"});
+	}	else {
+		User.findOne({'local.email': req.user.local.email}, function(err, user) {
+			if(err){
+				res.json({success: false, err});
+			}
+			if(user)
+			{
+				var info = user.local.acc.details;
+				for(i = 0; i < info.length; i++)
+				{
+					if(info[i].ac_no == req.body.ac_no)
+					{
+						//res.json(info[i]);
+						res.render('sendInfo.ejs', { data: info[i] });
+					}
+				}
+			}
+		})
+	}
 		}
-		if(user)
-		{
-			var ac_no = req.user.local.ac_no;
-			var ac_type = req.user.local.ac_type;
-			var balance = req.user.local.balance;
-			var branch_id = req.user.local.branch_id;
-			var fname = req.user.local.fname;
-			var lname = req.user.local.lname;
 
-			res.render('info.ejs', { ac_no: ac_no, ac_type: ac_type, balance: balance, branch_id: branch_id, fname: fname, lname: lname});			
-		}
-	});
-	
-}
+exports.sendMoney = function(req, res)
+{
+	if(!req.user.local.email || !req.body.sender_ac_no || !req.body.receiver_ac_no || !req.body.receiver_email)
+	{
+		res.json({success: false, msg: 'Please enter valid details'});
+	} else {
+		var amt = req.body.amt;
+		User.findOne({'local.email': req.user.local.email}, function(err, user) {
+			if(err)
+			{
+				res.json({sucess: false, err});
+			}
+			if(user)
+			{
+				var info = user.local.acc.details;
+				for(i=0; i < info.length; i++)
+				{
+					if(info[i].ac_no == req.body.sender_ac_no)
+					{
+						var balance = parseInt(info[i].balance) - parseInt(amt);
+
+						user.local.acc.details[i].balance = balance;
+
+						user.save(function(err) {
+							if(err)
+							{
+								console.log(err);
+								//res.json({success: false, err});
+							}
+						});
+						}
+					}
+				}
+			});
+		};
+
+		User.findOne({'local.email': req.body.receiver_email}, function(err, user) {
+			if(err)
+			{
+				console.log(err);
+				// res.json({success: false, err});
+			}
+			if(user)
+			{
+				var info = user.local.acc.details;
+				for(i=0; i < info.length; i++)
+				{
+					if(info[i].ac_no == req.body.receiver_ac_no)
+					{
+						var balance = parseInt(info[i].balance) + parseInt(amt)
+
+						user.local.acc.details[i].balance = balance;
+
+						user.save(function(err, savedUser) {
+							if(err)
+							{
+								console.log(err);
+								// res.json({success: false, err});
+							} else {
+								res.status(200).send(" Money Send Successfully ")
+							}
+						});
+					}
+				}
+			}
+		});
+	}

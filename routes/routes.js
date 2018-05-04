@@ -23,11 +23,13 @@ module.exports = function(app, passport)
 		console.log(req.user);
 	});
 
-	app.get('/auth/user/info', isLoggedIn, userApi.getInfo);
+	app.get('/auth/user/info', isLoggedIn, function(req, res) {
+		res.render('askInfo.ejs', {});
+	});
 
-	// app.get('/auth/user/sendMoney', isLoggedIn, function(req, res) {
-	// 	res.render('sendMoney.ejs', { req.flash('sendMoneyMsg')});
-	// });
+	app.get('/auth/user/sendMoney', isLoggedIn, function(req, res) {
+		res.render('sendMoney.ejs', {});
+	});
 
 	app.get('/logout', function(req, res) {
 			req.session.destroy(function() {
@@ -55,9 +57,9 @@ module.exports = function(app, passport)
 
 	app.post('/auth/user/create', isLoggedIn, userApi.create);
 
-	// app.put('/auth/user/info', isLoggedIn, userApi.updateInfo);
+	app.post('/auth/user/info', isLoggedIn, userApi.sendInfo);
 
-	// app.post('/auth/user/sendMoney', isLoggedIn, userApi.sendMoney);
+app.post('/auth/user/sendMoney', isLoggedIn, userApi.sendMoney);
 
 	//////////////////////////////////////////////////////////////////////////////////////
 
