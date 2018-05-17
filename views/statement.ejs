@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+    <title> Banking API with Passport.js</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style>
+        body         { padding-top:60px; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="jumbotron text- center">
+        <h1><i class="medium material-icons">insert_chart</i> Mini Statement </h1>
+
+        <br>
+
+      <table>
+        <thead>
+          <td>
+            A/C No.
+          </td>
+          <td>
+            Transaction Type
+          </td>
+          <td>
+            Initial Balance
+          </td>
+          <td>
+            Final Balance
+          </td>
+        </thead>
+      <% for(var i=0; i < data.length; i++) { %>
+      <tr>
+        <td>
+          <%= data[i].ac_no %>
+        </td>
+        <td>
+          <%= data[i].tranc_type %>
+        </td>
+        <td>
+          <%= data[i].initBal %>
+        </td>
+        <td>
+          <%= data[i].finalBal %>
+        </td>
+      </tr>
+    <% } %>
+      </table>
+    </div>
+    <br>
+    <br>
+    <br>
+
+    <a href="/auth/user" class="waves-effect waves-light btn"><i class="material-icons left">beenhere</i> Home </a>
+    <br>
+    <br>
+    <br>
+    <a href="/logout" class="waves-effect waves-light btn"><i class="material-icons left">close</i> Logout </a>
+    &nbsp &nbsp
+
+
+</div>
+</body>
+</html>

@@ -1,3 +1,4 @@
 module.exports = {
-  url: 'mongodb://localhost:27017/bankPassport'
+  urlLocal: 'mongodb://localhost:27017/bankPassportV2',
+  url: ''
 }

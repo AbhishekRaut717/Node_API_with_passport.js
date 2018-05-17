@@ -1,60 +1,19 @@
 var express = require('express');
 var path = require('path');
+var session = require('express-session');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
-var cors = require('cors');
+var mongoose = require('mongoose');
 var passport = require('passport');
 var flash = require('connect-flash');
-var session = require('express-session');
-var mongoose = require('mongoose');
-var logger = require('morgan');
+//var cors = require('cors');
 
-//setup app and port
 var app = express();
-const port = process.env.PORT || 3000;
-//send passport variable for config
-require('./config/passport.js')(passport);
+const port = process.env.PORT || 4000;
 
-//Setup Express
-app.set('view engine', 'ejs'); 
-app.use(bodyParser.urlencoded({ extended : true }));
-app.use(bodyParser.json());
-app.use(logger('dev'));
-
-
-//Cross Origin Resource Sharing
-app.use(cors());
-
-//Session and Cookie Setup
-app.use(session({
-  secret: 'My_secret',
-  credentials: true,
-  resave: false,
-  saveUninitialized: false,
-  unset: 'destroy'
-}));
-
-
-app.use(cookieParser());
-
-//setup Flash for passing message between the routes
-app.use(flash());
-
-//Initialize Passport
-app.use(passport.initialize());
-app.use(passport.session());
-
-
-// // view engine setup
-// app.set('views engine', 'ejs');
-// app.set(express.static(path.join(__dirname, 'views')));
-
-
-// mongoose setup
 var dbConfig = require('./config/db.config.js');
-mongoose.Promise = global.Promise;
 
-mongoose.connect(dbConfig.url);
+mongoose.connect(dbConfig.urlLocal);
 
 mongoose.connection.on('error', (err) => {
   console.log(err);
@@ -62,13 +21,40 @@ mongoose.connection.on('error', (err) => {
 });
 
 mongoose.connection.on('open', () => {
-  console.log('We are live on DB');
+  console.log('DB is LIVE');
 });
 
+require('./config/passport.js')(passport);
+
+//flash
+app.use(flash());
+
+//bodyParser
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+//view
+app.set('view engine', 'ejs');
+app.set(express.static(path.join(__dirname, 'views')));
+
+//session & cookie
+app.use(session({
+  secret: 'MY_SECRET',
+  resave: false,
+  saveUninitialized: false,
+  unset: 'destroy',
+  credentials: true
+}));
+app.use(cookieParser());
+
+
+//passport config
+app.use(passport.initialize());
+app.use(passport.session());
+
+//routes
 require('./routes/routes.js')(app, passport);
 
-
 app.listen(port, () => {
-
-	console.log(`We are live on ${port}`);
+  console.log('We are live on ' + port);
 });
