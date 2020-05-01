@@ -9,7 +9,7 @@ var flash = require('connect-flash');
 //var cors = require('cors');
 
 var app = express();
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 3000;
 
 var dbConfig = require('./config/db.config.js');
 
