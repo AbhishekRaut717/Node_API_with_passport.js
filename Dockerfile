@@ -1,5 +1,5 @@
 FROM node:7
-WORKDIR /app
+WORKDIR /node_bank
 COPY package.json /node_bank
 RUN npm install
 COPY . /node_bank
