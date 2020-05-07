@@ -9,7 +9,8 @@ var flash = require('connect-flash');
 //var cors = require('cors');
 
 var app = express();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
+//const HOST = '0.0.0.0';
 
 var dbConfig = require('./config/db.config.js');
 
@@ -55,6 +56,6 @@ app.use(passport.session());
 //routes
 require('./routes/routes.js')(app, passport);
 
-app.listen(port, () => {
-  console.log('We are live on ' + port);
+app.listen(PORT, () => {
+  console.log('We are live on ' + PORT + ' and ' + HOST);
 });
