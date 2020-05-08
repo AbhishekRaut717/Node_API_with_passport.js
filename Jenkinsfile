@@ -17,23 +17,23 @@ pipeline {
     // Each stage can execute one or more steps.
     stages {
         // This is a stage.
-        stage('Build') {
-            steps {
-                script {
-                    commit_id = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
-                }
-                // Build Docker Image
-                sh "docker build -t ${docker_repo_uri}:${commit_id} ."
+        stage(' Clone Repository ') {
 
-                 // Get Docker login credentials for ECR
-                sh "aws ecr get-login --no-include-email --region ${region} | sh"
+            git branch: "master",
+            url: "git@github.com:abhishek-raut1707/Node_API_with_passport.js.git",
+            credentialsId: "github-NodeBank"
+        }
 
-                // Push Docker image
-                sh "docker push ${docker_repo_uri}:${commit_id}"
+        stage(' Build Image ') {
 
-                // Clean up
-                sh "docker rmi -f ${docker_repo_uri}:${commit_id}"
+            sh "docker build --build-args APP_NAME=NodeBank -t 221020305703.dkr.ecr.ca-central-1.amazonaws.com/node_apps:latest ."
+        }
 
+        stage(' Push Image ') {
+
+            docker.withRegistry('https://221020305703.dkr.ecr.ca-central-1.amazonaws.com', 'ecr:ca-central-1:docker-ecr-node-app') {
+
+                sh "docker push 221020305703.dkr.ecr.ca-central-1.amazonaws.com/node_apps"
             }
         }
     }
